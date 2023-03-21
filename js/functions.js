@@ -1,13 +1,6 @@
-function stringLength(text, textМaxSize) {
+const isStringTooLong = (text, textМaxSize) => (text.length <= textМaxSize) ? 'Go on!' : 'Extra symbols detected';
 
-  if (text.length <= textМaxSize){
-    return true;
-  }
-
-  return false;
-}
-
-stringLength('проверяемая строка', 10);
+isStringTooLong('проверяемая строка', 10);
 
 function isStrPalindrome(str) {
   const n = str.length;
@@ -21,43 +14,35 @@ function isStrPalindrome(str) {
 
 isStrPalindrome('топот');
 
-// eslint-disable-next-line no-unused-vars
-function getNums(str) {
-  let res = '';
-  for(let i = 0; i < str.length; i++) {
-    if (str[i] >= '0' && str[i] <= '9') {
-      res = res + str[i];
+const getStringNumbers = (str) => {
+  let result = '';
+  let char;
+  for (char of str) {
+    if ((parseInt(char, 10)) >= 0 && (parseInt(char, 10)) <= 9) {
+      result += char;
     }
   }
-  if (res === '') {
-    return NaN;
-  }
-  return +res;
-}
+  return result === '' ? NaN : +result;
+};
 
-getNums('2023 год');
+getStringNumbers('2023 год');
 
-function getString (n, str) {
-  let counter = 0;
-  let emptyString = '';
-  while (emptyString.length < n) {
-    emptyString = emptyString + str[counter];
-    counter++;
-    if (counter >= str.length) {
-      counter = 0;
+const addStringSize = (str, strMinSize, additionalStr) => {
+  // eslint-disable-next-line no-shadow
+  const countStringSigns = (n, str) => {
+    let counter = 0;
+    let emptyString = '';
+    while (emptyString.length < n) {
+      emptyString = emptyString + str[counter];
+      counter++;
+      if (counter >= str.length) {
+        counter = 0;
+      }
     }
-  }
-  return emptyString;
-}
+    return emptyString;
+  };
+  return str.length < strMinSize ? countStringSigns(strMinSize - str.length, additionalStr) + str : str;
+};
 
-function addStringSize (str, strMinSize, additionalStr) {
-  if (str.length < strMinSize) {
-    return getString(strMinSize - str.length, additionalStr) + str;
-  } else {
-    return str;
-  }
-}
-
-addStringSize('q', 4, 'werty');
-
+addStringSize ('q', 4, 'werty');
 
