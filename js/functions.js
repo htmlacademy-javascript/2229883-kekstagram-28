@@ -46,3 +46,7 @@ const addStringSize = (str, strMinSize, additionalStr) => {
 
 addStringSize ('q', 4, 'werty');
 
+export {isStringTooLong};
+export {isStrPalindrome};
+export {getStringNumbers};
+export {addStringSize};
