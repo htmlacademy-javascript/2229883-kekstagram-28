@@ -49,12 +49,18 @@ const showBigPicture = () => {
 
   document.querySelector('.social__comments-loader').addEventListener('click', addComments);
 
+
+  const shownPicturesWindow = document.querySelector('.showPictures');
+  const bodyModalWindow = document.querySelector('body');
+  const addCommentsToPicture = document.querySelector('.social__comments-loader');
+  const outOfPicture = document.querySelector('.cancelBigPicture');
+
   const closeBigPicture = () => {
-    document.querySelector('.showPictures').classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
+    shownPicturesWindow.classList.add('hidden');
+    bodyModalWindow.classList.remove('modal-open');
     showedCommentsAmount = 0;
-    document.querySelector('.social__comments-loader').removeEventListener('click', addComments);
-    document.querySelector('.cancelBigPicture').removeEventListener('click', closeBigPicture);
+    addCommentsToPicture.removeEventListener('click', addComments);
+    outOfPicture.removeEventListener('click', closeBigPicture);
     document.removeEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
         closeBigPicture();
