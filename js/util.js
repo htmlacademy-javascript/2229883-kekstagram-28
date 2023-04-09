@@ -29,14 +29,16 @@ const getUserData = () => {
   obj.url = `photos/${rnd25()}.jpg`;
   obj.description = 'Какое-то описание фотографии.';
   obj.likes = rnd200();
-  const objComment = {};
-  objComment.id = rnd200(); //couldBeImproved
-  objComment.avatar = `img/avatar-${rnd6()}.svg`;
-  objComment.Message = rndMessage ();
-  objComment.Names = rndNames ();
-  obj.comments = [
-    objComment
-  ];
+  const commentsAmount = rnd25();
+  obj.comments = [];
+  for (let i = 0; i < commentsAmount; i++) {
+    const objComment = {};
+    objComment.id = rnd200(); //couldBeImproved
+    objComment.avatar = `img/avatar-${rnd6()}.svg`;
+    objComment.Message = rndMessage ();
+    objComment.Names = rndNames ();
+    obj.comments.push(objComment);
+  }
   return obj;
 };
 

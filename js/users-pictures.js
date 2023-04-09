@@ -24,11 +24,12 @@ const fragment = document.createDocumentFragment();
 
 photosData.forEach((photo) => {
   const pictureElement = pictureTemplate.cloneNode(true);
-  const pictureImage = pictureElement.querySelector('.picture__img');
+  // const pictureImage = pictureElement.querySelector('.picture__img');
+  pictureElement.querySelector('.picture__img').src = photo.url;
   const pictureLikes = pictureElement.querySelector('.picture__likes');
   const pictureComments = pictureElement.querySelector('.picture__comments');
 
-  pictureImage.src = photo.url;
+  // pictureImage.src = photo.url;
   pictureLikes.textContent = photo.likes;
   pictureComments.textContent = photo.comments;
 
