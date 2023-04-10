@@ -54,8 +54,31 @@ window.onload = function () {
       elem.value = 'Поле обязательно. Хэштег должен начинаться с "#"';
       elem.style.backgroundColor = 'tomato';
     } else {
-      //const formData = new FormData(e.target);
       elem.style.backgroundColor = '#fff';
+      const FormRequest = new FormData(e.target);
+      fetch(
+        'https://28.javascript.pages.academy/kekstagram/data',
+        {
+          method: 'POST',
+          credentials: 'same-origin',
+          body: new FormRequest(e.target),
+        },
+      )
+        .then((response) => {
+          // eslint-disable-next-line no-console
+          console.log(response.status);
+          // eslint-disable-next-line no-console
+          console.log(response.ok);
+          return response.json();
+        })
+        .then((data) => {
+          // eslint-disable-next-line no-console
+          console.log('Результат', data);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err);
+        });
     }
   });
 };
