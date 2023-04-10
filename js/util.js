@@ -23,6 +23,7 @@ const arNames = [
 const rndMessage = () => arMessage [rnd6() - 1];
 const rndNames = () => arNames [rnd6() - 1];
 
+//legacy_code
 const getUserData = () => {
   const obj = {};
   obj.id = rnd25();

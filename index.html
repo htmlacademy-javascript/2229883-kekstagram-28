@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="vendor/nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кекстаграм</title>
 </head>
@@ -46,7 +47,7 @@
                   <!-- Изменение размера изображения -->
                   <fieldset class="img-upload__scale  scale">
                     <button type="button" class="scale__control  scale__control--smaller">Уменьшить</button>
-                    <input type="text" class="scale__control  scale__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="scale__control  scale__control--value" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="scale__control  scale__control--bigger">Увеличить</button>
                   </fieldset>
 
@@ -69,42 +70,42 @@
                 <fieldset class="img-upload__effects  effects">
                   <ul class="effects__list">
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-none" value="none" checked>
+                      <input type="radio" class="effects__radio  visually-hidden noEffect" name="effect" id="effect-none" value="none" checked>
                       <label for="effect-none" class="effects__label">
                         <span class="effects__preview  effects__preview--none">Превью фото без эффекта</span>
                         Оригинал
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-chrome" value="chrome">
+                      <input type="radio" class="effects__radio  visually-hidden chromeEffect" name="effect" id="effect-chrome" value="chrome">
                       <label for="effect-chrome" class="effects__label">
                         <span class="effects__preview  effects__preview--chrome">Превью эффекта Хром</span>
                         Хром
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-sepia" value="sepia">
+                      <input type="radio" class="effects__radio  visually-hidden sepiaEffect" name="effect" id="effect-sepia" value="sepia">
                       <label for="effect-sepia" class="effects__label">
                         <span class="effects__preview  effects__preview--sepia">Превью эффекта Сепия</span>
                         Сепия
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-marvin" value="marvin">
+                      <input type="radio" class="effects__radio  visually-hidden marvinEffect" name="effect" id="effect-marvin" value="marvin">
                       <label for="effect-marvin" class="effects__label">
                         <span class="effects__preview  effects__preview--marvin">Превью эффекта Марвин</span>
                         Марвин
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-phobos" value="phobos">
+                      <input type="radio" class="effects__radio  visually-hidden phobosEffect" name="effect" id="effect-phobos" value="phobos">
                       <label for="effect-phobos" class="effects__label">
                         <span class="effects__preview  effects__preview--phobos">Превью эффекта Фобос</span>
                         Фобос
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-heat" value="heat">
+                      <input type="radio" class="effects__radio  visually-hidden heatEffect" name="effect" id="effect-heat" value="heat">
                       <label for="effect-heat" class="effects__label">
                         <span class="effects__preview  effects__preview--heat">Превью эффекта Зной</span>
                         Зной
@@ -119,12 +120,12 @@
                     <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" required>
                   </div>
                   <div class="img-upload__field-wrapper">
-                    <textarea class="text__description" name= "description" placeholder="Ваш комментарий..." maxlength="140" data-pristine-maxlength-message="Максимальная длина 25 символов"></textarea>
+                    <textarea class="img-upload__description text__description" name= "description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                   </div>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
-                <button type="submit" class="img-upload__submit" id="upload-submit">Опубликовать</button>
+                <input type="submit" class="img-upload__submit" id="upload-submit" value="Опубликовать">
               </div>
             </div>
           </form>
@@ -242,6 +243,7 @@
       <p class="social__text"></p>
   </li>
   </template>
+  <script src="vendor/nouislider/nouislider.js"> </script>
 <script src="vendor/pristine/pristine.min.js"> </script>
 <script src="js/main.js" type="module"></script>
 </body>
