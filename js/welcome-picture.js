@@ -1,13 +1,11 @@
-import {getUserData} from './util.js';
 
 let showedCommentsAmount = 0;
 
 const fragment = document.createDocumentFragment();
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 
-const showBigPicture = () => {
+const showBigPicture = (pictureData) => {
   showedCommentsAmount = 0;
-  const pictureData = getUserData();
   document.querySelector('.big-picture__img img').src = pictureData.url;
   document.querySelector('.likes-count').innerText = pictureData.likes;
   document.querySelector('.comments-count').innerText = pictureData.comments.length;
@@ -20,8 +18,8 @@ const showBigPicture = () => {
     const comment = pictureData.comments[i];
     const commentElement = commentTemplate.cloneNode(true);
     commentElement.querySelector('.social__picture').src = comment.avatar;
-    commentElement.querySelector('.social__picture').alt = comment.Names;
-    commentElement.querySelector('.social__text').innerText = comment.Message;
+    commentElement.querySelector('.social__picture').alt = comment.name;
+    commentElement.querySelector('.social__text').innerText = comment.message;
 
     fragment.appendChild(commentElement);
     showedCommentsAmount++;
@@ -38,8 +36,8 @@ const showBigPicture = () => {
       const comment = pictureData.comments[i];
       const commentElement = commentTemplate.cloneNode(true);
       commentElement.querySelector('.social__picture').src = comment.avatar;
-      commentElement.querySelector('.social__picture').alt = comment.Names;
-      commentElement.querySelector('.social__text').innerText = comment.Message;
+      commentElement.querySelector('.social__picture').alt = comment.name;
+      commentElement.querySelector('.social__text').innerText = comment.message;
       fragment.appendChild(commentElement);
       showedCommentsAmount++;
       document.querySelector('.social__comments').appendChild(commentElement);
@@ -80,8 +78,21 @@ const showBigPicture = () => {
   document.querySelector('.showPictures').classList.remove('hidden');
 };
 
-document.querySelector('.img-upload__input').addEventListener('click', (event) => {
-  event.preventDefault();
-  showBigPicture();
-});
+// document.querySelectorAll('.picture__img').addEventListener('click', (event) => {
+//   event.preventDefault();
+//   showBigPicture();
+// });
 
+const showPicturesOfRandoms = function (pictures) {
+  const picturesOfRandoms = document.querySelectorAll('.picture__img');
+  for(let i = 0; i < picturesOfRandoms.length; i++){
+    picturesOfRandoms[i].addEventListener('click', (event) => {
+      event.preventDefault();
+      showBigPicture(pictures[i]);
+    });
+  }
+};
+
+
+export {showPicturesOfRandoms};
+export {showBigPicture};
