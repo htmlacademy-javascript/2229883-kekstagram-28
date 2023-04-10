@@ -1,3 +1,5 @@
+import {showAlert} from './util.js';
+
 const showDownloadedPicture = () => {
   document.querySelector('.img-filters__title').classList.remove('visually-hidden');
   document.querySelector('.pictures__title').classList.remove('visually-hidden');
@@ -55,29 +57,30 @@ window.onload = function () {
       elem.style.backgroundColor = 'tomato';
     } else {
       elem.style.backgroundColor = '#fff';
-      const FormRequest = new FormData(e.target);
+      const formRequest = new FormData(e.target);
+      console.log(document.querySelector('.img-upload__input').files)
+      formRequest.append('image', 'img/upload-default-image.jpg');
+      // eslint-disable-next-line no-console
+      for (let pair of formRequest.entries()) {
+        console.log({field: pair[1]});
+    };
+      console.log(e.target);
       fetch(
-        'https://28.javascript.pages.academy/kekstagram/data',
+        'https://28.javascript.pages.academy/kekstagram',
         {
           method: 'POST',
-          credentials: 'same-origin',
-          body: new FormRequest(e.target),
+          body: formRequest,
         },
       )
         .then((response) => {
-          // eslint-disable-next-line no-console
-          console.log(response.status);
-          // eslint-disable-next-line no-console
-          console.log(response.ok);
-          return response.json();
+          if (response.ok) {
+            //onSuccess();
+          } else {
+            showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+          }
         })
-        .then((data) => {
-          // eslint-disable-next-line no-console
-          console.log('Результат', data);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error(err);
+        .catch(() => {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
         });
     }
   });
