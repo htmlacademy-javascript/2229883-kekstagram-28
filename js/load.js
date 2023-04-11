@@ -2,29 +2,6 @@ import {showImages} from './users-pictures.js';
 //import './welcome-pictures.js';
 import {showPicturesOfRandoms} from './welcome-picture.js';
 
-// fetch(
-//   'https://28.javascript.pages.academy/kekstagram/data',
-//   {
-//     method: 'POST',
-//     credentials: 'same-origin',
-//     body: new FormData(),
-//   },
-// )
-//   .then((response) => {
-//     // eslint-disable-next-line no-console
-//     console.log(response.status);
-//     // eslint-disable-next-line no-console
-//     console.log(response.ok);
-//     return response.json();
-//   })
-//   .then((data) => {
-//     // eslint-disable-next-line no-console
-//     console.log('Результат', data);
-//   })
-//   .catch((err) => {
-//     // eslint-disable-next-line no-console
-//     console.error(err);
-//   });
 
 const createLoader = (onSuccess, onError) => () => fetch(
   'https://28.javascript.pages.academy/kekstagram/data',
@@ -49,4 +26,3 @@ const createLoader = (onSuccess, onError) => () => fetch(
     onError(err);
   });
 export {createLoader};
-

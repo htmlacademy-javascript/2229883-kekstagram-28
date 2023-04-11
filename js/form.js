@@ -1,3 +1,6 @@
+import {showAlert} from './util.js';
+import {onSuccess} from './util.js';
+
 const showDownloadedPicture = () => {
   document.querySelector('.img-filters__title').classList.remove('visually-hidden');
   document.querySelector('.pictures__title').classList.remove('visually-hidden');
@@ -6,8 +9,7 @@ const showDownloadedPicture = () => {
   document.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.querySelector('.img-upload__effect-level').classList.add('visually-hidden');
 };
-document.querySelector('.img-upload__input').addEventListener('click', (event) => {
-  event.preventDefault();
+document.querySelector('.img-upload__input').addEventListener('click', () => {
   showDownloadedPicture();
 });
 
@@ -20,65 +22,6 @@ const closePictureAditor = () => {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       closePictureAditor();
-    }
-  });
-};
-
-document.querySelector('.img-upload__cancel').addEventListener('click', closePictureAditor);
-
-window.onload = function () {
-
-  const form = document.querySelector('.img-upload__form');
-
-  const pristine = new Pristine(form);
-
-  const elem = document.querySelector('.text__hashtags');
-
-  pristine.addValidator(elem, (value) => {
-
-    const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-
-    if (hashtag.test(value)){
-      return true;
-    }
-    return false;
-
-  }, 'Error', 5, false);
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const valid = pristine.validate(elem);
-    // eslint-disable-next-line no-console
-    console.log(valid);
-    if (valid === false) {
-      elem.value = 'Поле обязательно. Хэштег должен начинаться с "#"';
-      elem.style.backgroundColor = 'tomato';
-    } else {
-      elem.style.backgroundColor = '#fff';
-      const FormRequest = new FormData(e.target);
-      fetch(
-        'https://28.javascript.pages.academy/kekstagram/data',
-        {
-          method: 'POST',
-          credentials: 'same-origin',
-          body: new FormRequest(e.target),
-        },
-      )
-        .then((response) => {
-          // eslint-disable-next-line no-console
-          console.log(response.status);
-          // eslint-disable-next-line no-console
-          console.log(response.ok);
-          return response.json();
-        })
-        .then((data) => {
-          // eslint-disable-next-line no-console
-          console.log('Результат', data);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error(err);
-        });
     }
   });
 };
@@ -219,3 +162,65 @@ heatEffect.addEventListener('click', () => {
   previewImage.style.filter = `${effectName}(${valueEffectElement.value})`;
   previewImage.classList.add('effects__preview--heat');
 });
+
+document.querySelector('.img-upload__cancel').addEventListener('click', closePictureAditor);
+
+window.onload = function () {
+
+  const form = document.querySelector('.img-upload__form');
+
+  const pristine = new Pristine(form);
+
+  const elem = document.querySelector('.text__hashtags');
+
+  pristine.addValidator(elem, (value) => {
+
+    const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
+
+    if (hashtag.test(value)){
+      return true;
+    }
+    return false;
+
+  }, 'Error', 5, false);
+
+  function resetForm() {
+    document.querySelector('.img-upload__form').reset();
+  }
+  const defaultPictureState = () => {
+    resetForm();
+    closePictureAditor();
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const valid = pristine.validate(elem);
+    // eslint-disable-next-line no-console
+    //console.log(valid);
+    if (valid === false) {
+      elem.value = 'Поле обязательно. Хэштег должен начинаться с "#"';
+      elem.style.backgroundColor = 'tomato';
+    } else {
+      elem.style.backgroundColor = '#fff';
+      const formRequest = new FormData(e.target);
+      fetch(
+        'https://28.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formRequest,
+        },
+      )
+        .then((response) => {
+          if (response.ok) {
+            defaultPictureState();
+            onSuccess('Фото успешно отправлено!');
+          } else {
+            throw new Error('Не удалось отправить фото');
+          }
+        })
+        .catch((err) => {
+          showAlert(err.message);
+        });
+    }
+  });
+};
