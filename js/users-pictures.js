@@ -20,7 +20,7 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 //   }
 // ];
 
-function showImages (photosData) {
+const showImages = (photosData) => {
   const fragment = document.createDocumentFragment();
 
   photosData.forEach((photo) => {
@@ -38,6 +38,6 @@ function showImages (photosData) {
   });
 
   pictures.appendChild(fragment);
-}
+};
 
 export {showImages};

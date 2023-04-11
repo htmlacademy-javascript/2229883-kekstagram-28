@@ -52,12 +52,12 @@ const buttonBigger = document.querySelector('.scale__control--bigger');
 valueElement.value = `${100 }%`;
 
 
-function updateValue(step) {
+const updateValue = (step) => {
   const currentValue = parseInt(valueElement.value, 10);
   const newValue = Math.min(Math.max(currentValue + step, 25), 100);
   valueElement.value = `${newValue}%`;
   updatePreview(newValue);
-}
+};
 
 buttonBigger.addEventListener('click', () => {
   updateValue(25);
@@ -87,7 +87,7 @@ noUiSlider.create(sliderEffectElement , {
   connect: 'lower',
 });
 
-function setSliderRange(maxValue) {
+const setSliderRange = (maxValue) => {
   sliderEffectElement.noUiSlider.updateOptions({
     range: {
       min: 0,
@@ -95,7 +95,7 @@ function setSliderRange(maxValue) {
     },
     start: maxValue
   }, false);
-}
+};
 
 let isPx = false;
 let effectName = '';
@@ -184,16 +184,16 @@ window.onload = function () {
 
   }, 'Error', 5, false);
 
-  function resetForm() {
+  const resetForm = () => {
     document.querySelector('.img-upload__form').reset();
-  }
+  };
   const defaultPictureState = () => {
     resetForm();
     closePictureAditor();
   };
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
     const valid = pristine.validate(elem);
     // eslint-disable-next-line no-console
     //console.log(valid);
@@ -202,7 +202,7 @@ window.onload = function () {
       elem.style.backgroundColor = 'tomato';
     } else {
       elem.style.backgroundColor = '#fff';
-      const formRequest = new FormData(e.target);
+      const formRequest = new FormData(evt.target);
       fetch(
         'https://28.javascript.pages.academy/kekstagram',
         {

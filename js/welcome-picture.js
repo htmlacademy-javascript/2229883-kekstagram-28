@@ -13,6 +13,7 @@ const showBigPicture = (pictureData) => {
 
   for (let i = 0; i < 5; i++) {
     if (i >= pictureData.comments.length) {
+      document.querySelector('social__comments-loader').classList.add('hidden');
       break;
     }
     const comment = pictureData.comments[i];
