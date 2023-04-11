@@ -19,6 +19,12 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 //     comments: 2
 //   }
 // ];
+const removePicture = () => {
+  const picturesArr = document.querySelectorAll('.pictures .picture');
+  picturesArr.forEach((picture) => {
+    picture.remove();
+  });
+};
 
 const showImages = (photosData) => {
   const fragment = document.createDocumentFragment();
@@ -37,6 +43,7 @@ const showImages = (photosData) => {
     fragment.appendChild(pictureElement);
   });
 
+  removePicture();
   pictures.appendChild(fragment);
 };
 
