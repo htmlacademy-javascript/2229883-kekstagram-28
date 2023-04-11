@@ -26,26 +26,3 @@ const createLoader = (onSuccess, onError) => () => fetch(
     onError(err);
   });
 export {createLoader};
-
-// const formRequest = new FormData();
-// const formLoader = (onSuccess, onError) => () => fetch(
-//   'https://28.javascript.pages.academy/code-and-magick/data',
-//   {
-//     method: 'POST',
-//     credentials: 'same-origin',
-//     body: new formRequest(),
-//   },
-// )
-//   .then((response) => {
-//     console.log(response.status);
-//     console.log(response.ok);
-//     return response.json();
-//   })
-//   .then((data) => {
-//     onSuccess('Результат', data);
-//   })
-//   .catch((err) => {
-//     onError(err);
-//   });
-
-// export {formLoader};
