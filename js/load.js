@@ -1,5 +1,4 @@
 import {showImages} from './users-pictures.js';
-import {showPicturesOfRandoms} from './welcome-picture.js';
 import {filterPicturesByComments} from './pictures-filter.js';
 import {filterRandomPictures} from './pictures-filter.js';
 
@@ -22,7 +21,6 @@ const createLoader = (onSuccess, onError) => () => fetch(
     onSuccess(pictures);
     document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     showImages(pictures);
-    showPicturesOfRandoms(pictures);
 
     const randomPicturesButton = document.querySelector('.img-filters__button--random-pictures');
     const popularPicturesButton = document.querySelector('.img-filters__button--popular-pictures');

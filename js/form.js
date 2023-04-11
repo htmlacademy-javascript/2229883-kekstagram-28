@@ -1,47 +1,35 @@
 import {showAlert} from './util.js';
 import {onSuccess} from './util.js';
 
-const showDownloadedPicture = () => {
-  document.querySelector('.img-filters__title').classList.remove('visually-hidden');
-  document.querySelector('.pictures__title').classList.remove('visually-hidden');
-  document.querySelector('.img-upload__title').classList.remove('visually-hidden');
-  document.querySelector('.img-upload__input').classList.remove('visually-hidden');
-  document.querySelector('.img-upload__overlay').classList.remove('hidden');
-  document.querySelector('.img-upload__effect-level').classList.add('visually-hidden');
-};
-document.querySelector('.img-upload__input').addEventListener('click', () => {
-  showDownloadedPicture();
-});
-
-const closePictureAditor = () => {
+const closePictureEditor = () => {
   document.querySelector('.img-filters__title').classList.add('visually-hidden');
   document.querySelector('.pictures__title').classList.add('visually-hidden');
   document.querySelector('.img-upload__title').classList.add('visually-hidden');
   document.querySelector('.img-upload__input').classList.add('visually-hidden');
   document.querySelector('.img-upload__overlay').classList.add('hidden');
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      closePictureAditor();
+  document.removeEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description')) {
+      closePictureEditor();
     }
   });
 };
 
-const unFocusHashtag = () => {
-  document.querySelector('.text__hashtags').style.backgroundColor = '#fff';
-  document.querySelector('.text__hashtags').value = '';
+const showDownloadedPicture = () => {
+  document.querySelector('.img-upload__title').classList.remove('visually-hidden');
+  document.querySelector('.img-upload__input').classList.remove('visually-hidden');
+  document.querySelector('.img-upload__overlay').classList.remove('hidden');
+  document.querySelector('.img-upload__effect-level').classList.add('visually-hidden');
+  document.querySelector('.img-upload__cancel').addEventListener('click', closePictureEditor);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description')) {
+      closePictureEditor();
+    }
+  });
 };
-document.querySelector('.text__hashtags').addEventListener('focus', unFocusHashtag);
 
-
-// const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-// const hashtagValidation = () => {
-//   if (!(hashtag.test(document.querySelector('.text__hashtags').value))) {
-//     document.querySelector('.text__hashtags').style.border = '2px solid red';
-//   } else {
-//     document.querySelector('.text__hashtags').style.border = '2px solid green';
-//   }
-// };
-// document.querySelector('.text__hashtags').addEventListener('change', hashtagValidation);
+document.querySelector('.img-upload__input').addEventListener('click', () => {
+  showDownloadedPicture();
+});
 
 
 const previewImage = document.querySelector('.img-upload__preview img');
@@ -73,7 +61,7 @@ function updatePreview(scaleValue) {
 
 const sliderEffectElement = document.querySelector('.img-upload__effect-level');
 const valueEffectElement = document.querySelector('.effect-level__value');
-// const addEffect = document.querySelector('.');
+
 
 valueEffectElement.value = 0;
 
@@ -163,8 +151,6 @@ heatEffect.addEventListener('click', () => {
   previewImage.classList.add('effects__preview--heat');
 });
 
-document.querySelector('.img-upload__cancel').addEventListener('click', closePictureAditor);
-
 window.onload = function () {
 
   const form = document.querySelector('.img-upload__form');
@@ -174,31 +160,43 @@ window.onload = function () {
   const elem = document.querySelector('.text__hashtags');
 
   pristine.addValidator(elem, (value) => {
-
-    const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-
-    if (hashtag.test(value)){
-      return true;
+    const hashtags = value.split(' ').map((hashtag) => hashtag.toLowerCase());
+    if (hashtags.length > 5) {
+      return false;
     }
-    return false;
+
+    hashtags.forEach((hashtag, i) => {
+      if (hashtags.includes(hashtag, i + 1)) {
+        return false;
+      }
+    });
+
+    const hashtagRegexp = /^#[a-zа-яё0-9]{1,19}$/i;
+    hashtags.forEach((hashtag) => {
+      if (!hashtagRegexp.test(hashtag) || hashtag.length > 20){
+        return false;
+      }
+    });
+    return true;
 
   }, 'Error', 5, false);
 
   const resetForm = () => {
     document.querySelector('.img-upload__form').reset();
+    previewImage.src = 'img/upload-default-image.jpg';
+    updatePreview(100);
+    previewImage.style.filter = 'none';
   };
   const defaultPictureState = () => {
     resetForm();
-    closePictureAditor();
+    closePictureEditor();
   };
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const valid = pristine.validate(elem);
-    // eslint-disable-next-line no-console
-    //console.log(valid);
     if (valid === false) {
-      elem.value = 'Поле обязательно. Хэштег должен начинаться с "#"';
+      elem.value = 'Некорректный хэштег';
       elem.style.backgroundColor = 'tomato';
     } else {
       elem.style.backgroundColor = '#fff';
