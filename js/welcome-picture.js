@@ -12,7 +12,7 @@ const showBigPicture = (pictureData) => {
   document.querySelector('.social__caption').innerText = pictureData.description;
 
   for (let i = 0; i < 5; i++) {
-    if (i >= pictureData.comments.length) {
+    if (i > pictureData.comments.length - 1) {
       break;
     }
     const comment = pictureData.comments[i];
@@ -23,8 +23,12 @@ const showBigPicture = (pictureData) => {
 
     fragment.appendChild(commentElement);
     showedCommentsAmount++;
-
   }
+
+  if (showedCommentsAmount >= pictureData.comments.length) {
+    document.querySelector('.social__comments-loader').classList.add('hidden');
+  }
+
   document.querySelector('.comments-count-showed').innerText = showedCommentsAmount;
 
   const addComments = () => {
@@ -42,6 +46,9 @@ const showBigPicture = (pictureData) => {
       showedCommentsAmount++;
       document.querySelector('.social__comments').appendChild(commentElement);
     }
+    if (showedCommentsAmount >= pictureData.comments.length) {
+      document.querySelector('.social__comments-loader').classList.add('hidden');
+    }
     document.querySelector('.comments-count-showed').innerText = showedCommentsAmount;
   };
 
@@ -57,6 +64,7 @@ const showBigPicture = (pictureData) => {
     shownPicturesWindow.classList.add('hidden');
     bodyModalWindow.classList.remove('modal-open');
     showedCommentsAmount = 0;
+    document.querySelector('.social__comments-loader').classList.remove('hidden');
     addCommentsToPicture.removeEventListener('click', addComments);
     outOfPicture.removeEventListener('click', closeBigPicture);
     document.removeEventListener('keydown', (event) => {
@@ -66,8 +74,6 @@ const showBigPicture = (pictureData) => {
     });
   };
   document.querySelector('.social__comments').replaceChildren(fragment);
-  // document.querySelector('.social__comment-count').classList.add('hidden');
-  // document.querySelector('.comments-loader').classList.add('hidden');
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
@@ -77,11 +83,6 @@ const showBigPicture = (pictureData) => {
   document.querySelector('.cancelBigPicture').addEventListener('click', closeBigPicture);
   document.querySelector('.showPictures').classList.remove('hidden');
 };
-
-// document.querySelectorAll('.picture__img').addEventListener('click', (event) => {
-//   event.preventDefault();
-//   showBigPicture();
-// });
 
 const showPicturesOfRandoms = function (pictures) {
   const picturesOfRandoms = document.querySelectorAll('.picture__img');

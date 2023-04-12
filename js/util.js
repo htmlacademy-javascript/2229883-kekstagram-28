@@ -2,7 +2,7 @@ const rnd25 = () => Math.round(Math.random() * 24 + 1);
 const rnd200 = () => Math.round(Math.random() * 174 + 15);
 const rnd6 = () => Math.round(Math.random() * 5 + 1);
 
-const arMessage = [
+const arMessages = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -20,7 +20,7 @@ const arNames = [
   'Борис',
 ];
 
-const rndMessage = () => arMessage [rnd6() - 1];
+const rndMessage = () => arMessages [rnd6() - 1];
 const rndNames = () => arNames [rnd6() - 1];
 
 //legacy_code
