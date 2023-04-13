@@ -25,29 +25,28 @@ const createLoader = (onSuccess, onError) => () => fetch(
     const randomPicturesButton = document.querySelector('.img-filters__button--random-pictures');
     const popularPicturesButton = document.querySelector('.img-filters__button--popular-pictures');
     const defaultPicturesButton = document.querySelector('.img-filters__button--default-pictures');
-    const rendomPicturesCallback = () => {
+
+    const setFilter = (callback) => (evt) => {
       document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-      document.querySelector('.img-filters__button--random-pictures').classList.add('img-filters__button--active');
-      const filteredPictures = filterRandomPictures(pictures);
-      const debouncedShowImages = debounce(showImages);
-      debouncedShowImages(filteredPictures);
+      evt.target.classList.add('img-filters__button--active');
+      let filteredPictures;
+      switch (evt.target.id) {
+        case 'filter-default':
+          filteredPictures = pictures;
+          break;
+        case 'filter-random':
+          filteredPictures = filterRandomPictures(pictures);
+          break;
+        case 'filter-discussed':
+          filteredPictures = filterPicturesByComments(pictures);
+          break;
+      }
+      callback(filteredPictures);
     };
-    randomPicturesButton.addEventListener('click', rendomPicturesCallback);
-    const popularPicturesCallback = () => {
-      document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-      document.querySelector('.img-filters__button--popular-pictures').classList.add('img-filters__button--active');
-      const filteredPictures = filterPicturesByComments(pictures);
-      const debouncedShowImages = debounce(showImages);
-      debouncedShowImages(filteredPictures);
-    };
-    popularPicturesButton.addEventListener('click', popularPicturesCallback);
-    const defaultPicturesCallback = () => {
-      document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-      document.querySelector('.img-filters__button--default-pictures').classList.add('img-filters__button--active');
-      const debouncedShowImages = debounce(showImages);
-      debouncedShowImages(pictures);
-    };
-    defaultPicturesButton.addEventListener('click', defaultPicturesCallback);
+    const debouncedClickOnFilter = setFilter(debounce(showImages));
+    randomPicturesButton.addEventListener('click', debouncedClickOnFilter);
+    popularPicturesButton.addEventListener('click', debouncedClickOnFilter);
+    defaultPicturesButton.addEventListener('click', debouncedClickOnFilter);
   })
   .catch((err) => {
     onError(err);

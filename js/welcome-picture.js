@@ -66,21 +66,27 @@ const showBigPicture = (pictureData) => {
     showedCommentsAmount = 0;
     document.querySelector('.social__comments-loader').classList.remove('hidden');
     addCommentsToPicture.removeEventListener('click', addComments);
-    outOfPicture.removeEventListener('click', closeBigPicture);
-    document.removeEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeBigPicture();
-      }
-    });
+    // Отлючил правила линта, тк с ними невозможно убирать слушатели событий
+    // eslint-disable-next-line no-use-before-define
+    outOfPicture.removeEventListener('click', closeOnButton);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('keydown', closeOnEsc);
   };
-  document.querySelector('.social__comments').replaceChildren(fragment);
-  document.querySelector('body').classList.add('modal-open');
-  document.addEventListener('keydown', (event) => {
+
+  const closeOnButton = () => {
+    closeBigPicture();
+  };
+
+  const closeOnEsc = (event) => {
     if (event.key === 'Escape') {
       closeBigPicture();
     }
-  });
-  document.querySelector('.cancelBigPicture').addEventListener('click', closeBigPicture);
+  };
+
+  document.querySelector('.social__comments').replaceChildren(fragment);
+  document.querySelector('body').classList.add('modal-open');
+  document.addEventListener('keydown', closeOnEsc);
+  document.querySelector('.cancelBigPicture').addEventListener('click', closeOnButton);
   document.querySelector('.showPictures').classList.remove('hidden');
 };
 
