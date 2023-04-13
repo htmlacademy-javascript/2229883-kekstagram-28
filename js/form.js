@@ -195,7 +195,7 @@ window.onload = function () {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const valid = pristine.validate(elem);
-    if (valid === false) {
+    if (!valid) {
       elem.value = 'Некорректный хэштег';
       elem.style.backgroundColor = 'tomato';
     } else {

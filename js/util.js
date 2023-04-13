@@ -1,6 +1,8 @@
-const rnd25 = () => Math.round(Math.random() * 24 + 1);
-const rnd200 = () => Math.round(Math.random() * 174 + 15);
-const rnd6 = () => Math.round(Math.random() * 5 + 1);
+const takeRnd25 = () => Math.round(Math.random() * 24 + 1);
+const takeRnd200 = () => Math.round(Math.random() * 174 + 15);
+const takeRnd6 = () => Math.round(Math.random() * 5 + 1);
+const SUCCESS_SHOW_TIME = 5000;
+const ALERT_SHOW_TIME = 5000;
 
 const arMessages = [
   'Всё отлично!',
@@ -20,30 +22,9 @@ const arNames = [
   'Борис',
 ];
 
-const rndMessage = () => arMessages [rnd6() - 1];
-const rndNames = () => arNames [rnd6() - 1];
+const getArRndMessage = () => arMessages [takeRnd6() - 1];
+const getArRndNames = () => arNames [takeRnd6() - 1];
 
-//legacy_code
-const getUserData = () => {
-  const obj = {};
-  obj.id = rnd25();
-  obj.url = `photos/${rnd25()}.jpg`;
-  obj.description = 'Какое-то описание фотографии.';
-  obj.likes = rnd200();
-  const commentsAmount = rnd25();
-  obj.comments = [];
-  for (let i = 0; i < commentsAmount; i++) {
-    const objComment = {};
-    objComment.id = rnd200(); //couldBeImproved
-    objComment.avatar = `img/avatar-${rnd6()}.svg`;
-    objComment.Message = rndMessage ();
-    objComment.Names = rndNames ();
-    obj.comments.push(objComment);
-  }
-  return obj;
-};
-
-const ALERT_SHOW_TIME = 5000;
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -65,7 +46,6 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const SUCCESS_SHOW_TIME = 5000;
 const onSuccess = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -87,11 +67,10 @@ const onSuccess = (message) => {
   }, SUCCESS_SHOW_TIME);
 };
 
-export {rnd25};
-export {rnd200};
-export {rnd6};
-export {rndMessage};
-export {rndNames};
-export {getUserData};
+export {takeRnd25};
+export {takeRnd200};
+export {takeRnd6};
+export {getArRndMessage};
+export {getArRndNames};
 export {showAlert};
 export {onSuccess};

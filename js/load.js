@@ -25,29 +25,29 @@ const createLoader = (onSuccess, onError) => () => fetch(
     const randomPicturesButton = document.querySelector('.img-filters__button--random-pictures');
     const popularPicturesButton = document.querySelector('.img-filters__button--popular-pictures');
     const defaultPicturesButton = document.querySelector('.img-filters__button--default-pictures');
-    const rendomPicturesCallback = () => {
+    const showRendomPicturesCallback = () => {
       document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
       document.querySelector('.img-filters__button--random-pictures').classList.add('img-filters__button--active');
       const filteredPictures = filterRandomPictures(pictures);
       const debouncedShowImages = debounce(showImages);
       debouncedShowImages(filteredPictures);
     };
-    randomPicturesButton.addEventListener('click', rendomPicturesCallback);
-    const popularPicturesCallback = () => {
+    randomPicturesButton.addEventListener('click', showRendomPicturesCallback);
+    const showPopularPicturesCallback = () => {
       document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
       document.querySelector('.img-filters__button--popular-pictures').classList.add('img-filters__button--active');
       const filteredPictures = filterPicturesByComments(pictures);
       const debouncedShowImages = debounce(showImages);
       debouncedShowImages(filteredPictures);
     };
-    popularPicturesButton.addEventListener('click', popularPicturesCallback);
-    const defaultPicturesCallback = () => {
+    popularPicturesButton.addEventListener('click', showPopularPicturesCallback);
+    const showDefaultPicturesCallback = () => {
       document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
       document.querySelector('.img-filters__button--default-pictures').classList.add('img-filters__button--active');
       const debouncedShowImages = debounce(showImages);
       debouncedShowImages(pictures);
     };
-    defaultPicturesButton.addEventListener('click', defaultPicturesCallback);
+    defaultPicturesButton.addEventListener('click', showDefaultPicturesCallback);
   })
   .catch((err) => {
     onError(err);
