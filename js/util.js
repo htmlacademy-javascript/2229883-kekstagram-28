@@ -1,8 +1,6 @@
 const takeRnd25 = () => Math.round(Math.random() * 24 + 1);
 const takeRnd200 = () => Math.round(Math.random() * 174 + 15);
 const takeRnd6 = () => Math.round(Math.random() * 5 + 1);
-const SUCCESS_SHOW_TIME = 5000;
-const ALERT_SHOW_TIME = 5000;
 
 const arMessages = [
   'Всё отлично!',
@@ -25,46 +23,86 @@ const arNames = [
 const getArRndMessage = () => arMessages [takeRnd6() - 1];
 const getArRndNames = () => arNames [takeRnd6() - 1];
 
-const showAlert = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '100';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '0';
-  alertContainer.style.top = '0';
-  alertContainer.style.right = '0';
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+const showAlert = () => {
+  const successElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  const closeButton = successElement.querySelector('.error__button');
 
-  alertContainer.textContent = message;
+  document.body.append(successElement);
 
-  document.body.append(alertContainer);
+  const closeSuccessMessage = () => {
+    successElement.remove();
+    // Отлючил правила линта, тк с ними невозможно убирать слушатели событий
+    // eslint-disable-next-line no-use-before-define
+    closeButton.removeEventListener('click', closeSuccesOnButtonClick);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('keydown', closeSuccessOnEsc);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('click', closeSuccessOnClickOutside);
+  };
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
+  const closeSuccesOnButtonClick = () => {
+    closeSuccessMessage();
+  };
+
+  const closeSuccessOnEsc = (evt) => {
+    evt.stopImmediatePropagation();
+
+    if (evt.key === 'Escape') {
+      closeSuccessMessage();
+    }
+  };
+
+  const closeSuccessOnClickOutside = (evt) => {
+    const isClosest = evt.target.closest('.error__inner');
+    if (!isClosest) {
+      closeSuccessMessage();
+    }
+  };
+
+
+  closeButton.addEventListener('click', closeSuccesOnButtonClick);
+  document.addEventListener('keydown', closeSuccessOnEsc);
+  document.addEventListener('click', closeSuccessOnClickOutside);
 };
 
-const onSuccess = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '100';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '0';
-  alertContainer.style.top = '0';
-  alertContainer.style.right = '0';
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'green';
+const onSuccess = () => {
+  const successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  const closeButton = successElement.querySelector('.success__button');
 
-  alertContainer.textContent = message;
+  document.body.append(successElement);
 
-  document.body.append(alertContainer);
+  const closeSuccessMessage = () => {
+    successElement.remove();
+    // Отлючил правила линта, тк с ними невозможно убирать слушатели событий
+    // eslint-disable-next-line no-use-before-define
+    closeButton.removeEventListener('click', closeSuccesOnButtonClick);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('keydown', closeSuccessOnEsc);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('click', closeSuccessOnClickOutside);
+  };
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, SUCCESS_SHOW_TIME);
+  const closeSuccesOnButtonClick = () => {
+    closeSuccessMessage();
+  };
+
+  const closeSuccessOnEsc = (evt) => {
+    if (evt.key === 'Escape') {
+      closeSuccessMessage();
+    }
+  };
+
+  const closeSuccessOnClickOutside = (evt) => {
+    const isClosest = evt.target.closest('.success__inner');
+    if (!isClosest) {
+      closeSuccessMessage();
+    }
+  };
+
+
+  closeButton.addEventListener('click', closeSuccesOnButtonClick);
+  document.addEventListener('keydown', closeSuccessOnEsc);
+  document.addEventListener('click', closeSuccessOnClickOutside);
 };
 
 export {takeRnd25};

@@ -1,7 +1,20 @@
 import {showAlert} from './util.js';
 import {onSuccess} from './util.js';
 
+const previewImage = document.querySelector('.img-upload__preview img');
+const valueElement = document.querySelector('.scale__control--value');
+const buttonSmaller = document.querySelector('.scale__control--smaller');
+const buttonBigger = document.querySelector('.scale__control--bigger');
+
+const resetForm = () => {
+  document.querySelector('.img-upload__form').reset();
+  previewImage.src = 'img/upload-default-image.jpg';
+  updatePreview(100);
+  previewImage.style.filter = 'none';
+};
+
 const closePictureEditor = () => {
+  resetForm();
   document.querySelector('.img-filters__title').classList.add('visually-hidden');
   document.querySelector('.pictures__title').classList.add('visually-hidden');
   document.querySelector('.img-upload__title').classList.add('visually-hidden');
@@ -21,21 +34,15 @@ const showDownloadedPicture = () => {
   document.querySelector('.img-upload__effect-level').classList.add('visually-hidden');
   document.querySelector('.img-upload__cancel').addEventListener('click', closePictureEditor);
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description')) {
+    if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description') && !document.querySelector('.error')) {
       closePictureEditor();
     }
   });
 };
 
-document.querySelector('.img-upload__input').addEventListener('click', () => {
+document.querySelector('.img-upload__input').addEventListener('change', () => {
   showDownloadedPicture();
 });
-
-
-const previewImage = document.querySelector('.img-upload__preview img');
-const valueElement = document.querySelector('.scale__control--value');
-const buttonSmaller = document.querySelector('.scale__control--smaller');
-const buttonBigger = document.querySelector('.scale__control--bigger');
 
 valueElement.value = `${100 }%`;
 
@@ -152,45 +159,33 @@ heatEffect.addEventListener('click', () => {
 });
 
 window.onload = function () {
-
   const form = document.querySelector('.img-upload__form');
+  const elem = document.querySelector('.text__hashtags');
 
   const pristine = new Pristine(form);
 
-  const elem = document.querySelector('.text__hashtags');
-
   pristine.addValidator(elem, (value) => {
-    const hashtags = value.split(' ').map((hashtag) => hashtag.toLowerCase());
+    const hashtags = value.length ? value.split(' ').map((hashtag) => hashtag.toLowerCase()) : [];
+    let isValid = true;
     if (hashtags.length > 5) {
-      return false;
+      isValid = false;
     }
 
     hashtags.forEach((hashtag, i) => {
       if (hashtags.includes(hashtag, i + 1)) {
-        return false;
+        isValid = false;
       }
     });
 
     const hashtagRegexp = /^#[a-zа-яё0-9]{1,19}$/i;
     hashtags.forEach((hashtag) => {
-      if (!hashtagRegexp.test(hashtag) || hashtag.length > 20){
-        return false;
+      if (!hashtagRegexp.test(hashtag) || hashtag.length > 20) {
+        isValid = false;
       }
     });
-    return true;
 
+    return isValid;
   }, 'Error', 5, false);
-
-  const resetForm = () => {
-    document.querySelector('.img-upload__form').reset();
-    previewImage.src = 'img/upload-default-image.jpg';
-    updatePreview(100);
-    previewImage.style.filter = 'none';
-  };
-  const defaultPictureState = () => {
-    resetForm();
-    closePictureEditor();
-  };
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -210,8 +205,8 @@ window.onload = function () {
       )
         .then((response) => {
           if (response.ok) {
-            defaultPictureState();
-            onSuccess('Фото успешно отправлено!');
+            closePictureEditor();
+            onSuccess();
           } else {
             throw new Error('Не удалось отправить фото');
           }
