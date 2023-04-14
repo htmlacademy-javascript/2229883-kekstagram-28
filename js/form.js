@@ -20,11 +20,15 @@ const closePictureEditor = () => {
   document.querySelector('.img-upload__title').classList.add('visually-hidden');
   document.querySelector('.img-upload__input').classList.add('visually-hidden');
   document.querySelector('.img-upload__overlay').classList.add('hidden');
-  document.removeEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description')) {
-      closePictureEditor();
-    }
-  });
+  // Отлючил правила линта, тк с ними невозможно убирать слушатели событий
+  // eslint-disable-next-line no-use-before-define
+  document.removeEventListener('keydown', closeFormOnEscCallback);
+};
+
+const closeFormOnEscCallback = (event) => {
+  if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description')) {
+    closePictureEditor();
+  }
 };
 
 const showDownloadedPicture = () => {
@@ -33,11 +37,7 @@ const showDownloadedPicture = () => {
   document.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.querySelector('.img-upload__effect-level').classList.add('visually-hidden');
   document.querySelector('.img-upload__cancel').addEventListener('click', closePictureEditor);
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && document.activeElement !== document.querySelector('.text__hashtags') && document.activeElement !== document.querySelector('.text__description') && !document.querySelector('.error')) {
-      closePictureEditor();
-    }
-  });
+  document.addEventListener('keydown', closeFormOnEscCallback);
 };
 
 document.querySelector('.img-upload__input').addEventListener('change', () => {
