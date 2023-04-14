@@ -9,4 +9,3 @@ import './pictures-filter.js';
 import {createLoader} from './load.js';
 const loadPicturesFromServer = createLoader(() => {}, () => {});
 loadPicturesFromServer();
-
